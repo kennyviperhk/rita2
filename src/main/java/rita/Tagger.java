@@ -99,7 +99,6 @@ public class Tagger
 	    if (words == "") return new String[] {};
 	    String[] wordsArr = Tokenizer.tokenize(words);
 
-
 	    for (int i = 0; i < wordsArr.length; i++) {
 
 	      if (wordsArr[i].length() < 1) {
@@ -195,12 +194,15 @@ public class Tagger
 	    return ((tags == null) ? new String[] {} : tags);
 	}
 
+
 	private static String[] _applyContext(String words, String[] result, String[] choices2d) {
-/*
+
 		//console.log("ac(" + words + "," + result + "," + choices2d + ")");
 
+	/*	
 	    // Apply transformations
-	    for (int i = 0, l = words.length(); i < l; i++) {
+		int l = words.length();
+	    for (int i = 0; i < l; i++) {
 
 	      String word = Character.toString(words.charAt(i));
 	      String tag = result[i];
@@ -269,65 +271,68 @@ public class Tagger
 	      if (tag.startsWith("nn") && word.endsWith("ing")) {
 
 	        // DH: fixed here -- add check on choices2d for any verb: eg. // "morning"
-	        if (hasTag(choices2d[i], "vb")) {
+	        if (hasTag(new String[] {choices2d[i]}, "vb")) {
 	          tag = "vbg";
-	          _logCustom(8, word, tag);
+	          _logCustom("8", word, tag);
 	        }
 	      }
 
 	      // transform 9(dch): convert plural nouns (which are also 3sg-verbs) to
 	      // 3sg-verbs when following a singular noun (the dog dances, Dave dances, he dances)
-	      if (i > 0 && tag == "nns" && hasTag(choices2d[i], "vbz") && resultSA[i - 1].match(/^(nn|prp|nnp)$/)) {
+	      if (i > 0 && tag == "nns" && hasTag(new String[] {choices2d[i]}, "vbz") && resultSA[i - 1].matches("^(nn|prp|nnp)$")) {
 	        tag = "vbz";
-	        _logCustom(9, word, tag);
+	        _logCustom("9", word, tag);
 	      }
 
 	      // transform 10(dch): convert common nouns to proper
 	      // nouns when they start w' a capital
-	      if (tag.startsWith("nn") && (word.charAt(0) == word.charAt(0).toUpperCase())) {
+	      String firstChar = Character.toString(word.charAt(0);
+	      if (tag.startsWith("nn") && (firstChar == firstChar.toUpperCase())) {
 	        //if it is not at the start of a sentence or it is the only word
 	        // or when it is at the start of a sentence but can't be found in the dictionary
 	        if (i != 0 || words.length == 1 || (i == 0 && !_lexHas("nn", RiTa.singularize(word).toLowerCase()))) {
 	          tag = tag.endsWith("s") ? "nnps" : "nnp";
-	          _logCustom(10, word, tag);
+	          _logCustom("10", word, tag);
 	        }
 	      }
 
 	      // transform 11(dch): convert plural nouns (which are
 	      // also 3sg-verbs) to 3sg-verbs when followed by adverb
 	      if (i < result.length - 1 && tag == "nns" && resultSA[i + 1].startsWith("rb") &&
-	        hasTag(choices2d[i], "vbz")) {
+	        hasTag(new String[] {choices2d[i]}, "vbz")) {
 	        tag = "vbz";
-	        _logCustom(11, word, tag);
+	        _logCustom("11", word, tag);
 	      }
 
 	      // transform 12(dch): convert plural nouns which have an entry for their base form to vbz
 	      if (tag == "nns") {
-
+	    	  String[] p = {"nn", "prp", "cc", "nnp"};
 	        // is preceded by one of the following
-	        if (i > 0 && ["nn", "prp", "cc", "nnp"].indexOf(resultSA[i - 1]) > -1) {
+	        if (i > 0 && Arrays.asList(p).indexOf(resultSA[i - 1]) > -1) {
 	          // if word is ends with s or es and is "nns" and has a vb
 	          if (_lexHas("vb", RiTa.singularize(word))) {
 	            tag = "vbz";
-	            _logCustom(12, word, tag);
+	            _logCustom("12", word, tag);
 	          }
 	        } // if only word and not in lexicon
-	        else if (words.length == 1 && !choices2d[i].length) {
+	        
+	        
+	        else if (words.length() == 1 && choices2d[i].length() == 0) { //TODO: double check this
 	          // if the stem of a single word could be both nn and vb, return nns
 	          // only return vbz when the stem is vb but not nn
-	          if (!_lexHas("nn", RiTa.singularize(word)) && _lexHas("vb", RiTa.singularize(word))) {
+	          if (!("nn", RiTa.singularize(word)) && _lexHas("vb", RiTa.singularize(word))) {
 	            tag = "vbz";
-	            _logCustom(12, word, tag);
+	            _logCustom("12", word, tag);
 	          }
 
 	        }
 	      }
 
 	      //transform 13(cqx): convert a vb/ potential vb to vbp when following nns (Elephants dance, they dance)
-	      if (tag == "vb" || (tag == "nn" && hasTag(choices2d[i], "vb"))) {
-	        if (i > 0 && resultSA[i - 1].match("^(nns|nnps|prp)$")) {
+	      if (tag == "vb" || (tag == "nn" && hasTag(new String[] {choices2d[i]}, "vb"))) {
+	        if (i > 0 && resultSA[i - 1].matches("^(nns|nnps|prp)$")) {
 	          tag = "vbp";
-	          _logCustom(13, word, tag);
+	          _logCustom("13", word, tag);
 	        }
 	      }
 
@@ -335,13 +340,13 @@ public class Tagger
 	    }
 
 	    return result;
-		*/
 		
+*/
 		return null;
 	}
 
 	private static void _logCustom(String i, String frm, String to) {
-		// TODO Auto-generated method stub
+		System.out.println("\n  Custom("+i+") tagged '" + frm + "' -> '" + to + "'\n\n");
 		
 	}
 	

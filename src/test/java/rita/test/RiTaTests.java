@@ -170,11 +170,13 @@ public class RiTaTests {
 				"pinches", "pinch",
 				"catharses", "catharsis",
 				"hankies", "hanky"
+				
 		};
 		for (int i = 0; i < tests.length; i += 2) {
 		//	System.out.println("p: " + RiTa.singularize(tests[i]) + " s: " + tests[i + 1]);
 			assertEquals(RiTa.singularize(tests[i]), tests[i + 1]);
 		}
+		
 
 		assertEquals(RiTa.singularize("pleae"), "pleae"); // special-cased in code
 		assertEquals(RiTa.singularize("whizzes"), "whiz");
@@ -287,6 +289,26 @@ public class RiTaTests {
 		assertEquals("aquatics", RiTa.singularize("aquatics"));
 		assertEquals("mechanics", RiTa.singularize("mechanics"));
 		assertEquals("quarter", RiTa.singularize("quarters"));
+		
+		//currently failed cases #522
+		String[] tests2 = {
+				"hooves", "hoof",
+				"thieves", "thief",
+				"rabbis", "rabbi",
+				"flus", "flu",	
+				"safaris", "safari",
+				"sheaves", "sheaf",		
+				"uses", "use",			
+				"pinches", "pinch",				
+				"catharses", "catharsis",
+				"indices", "index"
+		};
+		
+		for (int i = 0; i < tests2.length; i += 2) {
+			//	System.out.println("p: " + RiTa.singularize(tests[i]) + " s: " + tests[i + 1]);
+				assertEquals(RiTa.singularize(tests2[i]), tests2[i + 1]);
+			}
+
 
 	}
 
@@ -386,6 +408,19 @@ public class RiTaTests {
 
 		assertEquals("aquatics", RiTa.pluralize("aquatics"));
 		assertEquals("mechanics", RiTa.pluralize("mechanics"));
+		
+		//#524
+		assertEquals("safari", RiTa.pluralize("safaris"));
+		assertEquals("millennium", RiTa.pluralize("millennia"));
+		assertEquals("preppy", RiTa.pluralize("preppies"));
+		assertEquals("sheaf", RiTa.pluralize("sheaves"));
+		assertEquals("pinch", RiTa.pluralize("pinches"));
+		assertEquals("use", RiTa.pluralize("uses"));
+		assertEquals("hanky", RiTa.pluralize("hankies"));
+		assertEquals("catharsis", RiTa.pluralize("catharses"));
+		assertEquals("hoof", RiTa.pluralize("hooves"));
+		
+		
 	}
 
 }
